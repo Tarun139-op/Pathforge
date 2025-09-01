@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title desc" role="img">
+  <title>Pathfinding Visualizer Icon</title>
+  <desc>Rounded square map grid with a highlighted routed path ending at a location pin.</desc>
+  <defs>
+    <linearGradient id="pfv-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="currentColor" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="currentColor" stop-opacity="0.05"/>
+    </linearGradient>
+    <style>
+      :root { --pfv-bg: #0b0f14; --pfv-fg: #10b981; }
+      @media (prefers-color-scheme: light) {
+        :root { --pfv-bg: #ffffff; --pfv-fg: #0ea5e9; }
+      }
+    </style>
+  </defs>
+
+  <!-- Background tile -->
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="var(--pfv-bg)"/>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#pfv-grad)" style="color: var(--pfv-fg)"/>
+
+  <!-- Subtle grid -->
+  <g opacity="0.20" style="color:#ffffff">
+    <path d="M16 8v48M28 8v48M40 8v48M52 8v48M8 16h48M8 28h48M8 40h48M8 52h48"
+          stroke="#ffffff" stroke-width="1" stroke-linecap="round"/>
+  </g>
+
+  <!-- Route path -->
+  <path d="M14 46
+           C18 34, 28 34, 34 40
+           S46 50, 50 38"
+        fill="none"
+        stroke="var(--pfv-fg)"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- Start node -->
+  <circle cx="14" cy="46" r="4" fill="var(--pfv-bg)" stroke="var(--pfv-fg)" stroke-width="3"/>
+
+  <!-- Destination pin -->
+  <g transform="translate(50 36)">
+    <path d="M0 0
+             c-4.2 0-7.5 3.3-7.5 7.5
+             c0 5.6 7.5 12.5 7.5 12.5
+             S7.5 13.1 7.5 7.5
+             C7.5 3.3 4.2 0 0 0z"
+          fill="var(--pfv-fg)"/>
+    <circle cx="0" cy="7.5" r="2.5" fill="var(--pfv-bg)"/>
+  </g>
+</svg>
