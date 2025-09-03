@@ -11,6 +11,7 @@ function PathAnimator({
   play,
   sideStatus,
   setError,
+  setAnimating,
 }) {
   const raf = useRef(null);
   const mapReady = useRef(false);
@@ -173,13 +174,15 @@ function PathAnimator({
   }, [play]);
 
   //Radius Layer Removal
-  function removeLayerIfExists(map, layerId, sourceId) {
-    if (map.getLayer(layerId)) {
-      map.removeLayer(layerId);
+  function removeLayerIfExists(map) {
+    if (map.getLayer("start-circle-layer")) {
+      map.removeLayer("start-circle-layer");
     }
   }
+
   //Radius layer readding again
   function addStartCircle(map) {
+    // map.addSource("start-circle", { type: "geojson", data: circle });
     map.addLayer({
       id: "start-circle-layer",
       type: "fill",
@@ -193,7 +196,15 @@ function PathAnimator({
   }
   // Main animation loop
   const startAnimation = () => {
-    removeLayerIfExists(map, "start-circle-layer", "start-circle");
+    // 🔥 Remove radius layer at start
+    removeLayerIfExists(map);
+    setAnimating(true);
+    setError({
+      type: "success",
+      message: "Animating.......",
+      duration: 100000,
+    });
+
     if (raf.current) return; // Already running
 
     const animate = (timestamp) => {
@@ -223,8 +234,21 @@ function PathAnimator({
           } else {
             currentPhase.current = "complete";
             if (path.length === 0) {
-              setError("No possible path to selected node in current radius");
+              setError({
+                type: "warning",
+                message: "No possible path to selected node in current radius",
+                duration: 5000,
+              });
             }
+
+            // 🎯 Animation is completely done → re-add circle
+            addStartCircle(map);
+            setError({
+              type: "success",
+              message: "Animation Completed",
+              duration: 5000,
+            });
+            setAnimating(false);
           }
         }
 
@@ -243,8 +267,8 @@ function PathAnimator({
     };
 
     raf.current = requestAnimationFrame(animate);
-    addStartCircle(map);
   };
+
   let count = 0;
   // Animate visited edges
   const animateVisited = () => {
@@ -311,6 +335,7 @@ function PathAnimator({
     }
 
     pIdx.current += 1;
+
     return pIdx.current < path.length;
   };
 

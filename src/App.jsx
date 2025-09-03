@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import "./App.css";
 import ControlBar from "./Components/ControlBar";
-import MainMap from "./Components/mainMap";
+import MainMap from "./Components/MainMap";
 import PathAnimator from "./Components/PathAnimator";
 
 function App() {
@@ -10,6 +10,8 @@ function App() {
   const [path, setPath] = useState([]);
   const [visited, setVisited] = useState([]);
   const [play, setPlay] = useState(100);
+  const [animating, setAnimating] = useState(false);
+  const [right, setRight] = useState(false);
   // UI state for start/end points
   const [startNode, setStartNode] = useState(null);
   const [endNode, setEndNode] = useState(null);
@@ -45,6 +47,7 @@ function App() {
         setNavbar={setNavbar}
         sideStatus={sideStatus}
         setSidestatus={setSidestatus}
+        animating={animating}
       />
 
       <MainMap
@@ -56,12 +59,16 @@ function App() {
         setStartNode={setStartNode}
         endNode={endNode}
         setEndNode={setEndNode}
+        mapDetails={mapDetails}
         setMapDetails={setMapDetails}
+        calculating={calculating}
         setCalculating={setCalculating}
         setError={setError}
         clearpath={clearpath}
         navbar={navbar}
         sideStatus={sideStatus}
+        right={right}
+        setRight={setRight}
       />
       {map && (
         <PathAnimator
@@ -70,6 +77,8 @@ function App() {
           visited={visited}
           play={play}
           sideStatus={sideStatus}
+          setAnimating={setAnimating}
+          setError={setError}
         />
       )}
     </>
